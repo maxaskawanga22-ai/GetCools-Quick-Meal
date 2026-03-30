@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getcool's Quick Meal</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+}
+
+/* BACKGROUND IMAGE */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(255,255,255,0.6), rgba(0,0,0,0.8)),
+                url("bg.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    color: gold;
+}
+
+.hero h1 {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: white;
+}
+
+.hero button {
+    margin-top: 20px;
+    padding: 15px 30px;
+    border: none;
+    background: gold;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* MENU */
+.menu {
+    background: black;
+    padding: 40px;
+    text-align: center;
+}
+
+.menu h2 {
+    color: gold;
+}
+
+.items {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #111;
+    padding: 20px;
+    width: 220px;
+    border-radius: 10px;
+    border: 1px solid gold;
+}
+
+.card button {
+    background: gold;
+    color: black;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* CART */
+.cart {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: white;
+    color: black;
+    padding: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>Getcool's Quick Meal</h1>
+    <p>Luxury Street Food Experience</p>
+    <button onclick="scrollToMenu()">Order Now</button>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+    <h2>Our Menu</h2>
+
+    <div class="items">
+        <div class="card">
+            <h3>Chips & Sausage</h3>
+            <p>K35</p>
+            <button onclick="addToCart('Chips & Sausage',35)">Add</button>
+        </div>
+
+        <div class="card">
+            <h3>Burger Deluxe</h3>
+            <p>K50</p>
+            <button onclick="addToCart('Burger Deluxe',50)">Add</button>
+        </div>
+    </div>
+</section>
+
+<!-- CART -->
+<div class="cart">
+    <h3>Your Order</h3>
+    <div id="cartItems"></div>
+    <p id="total">Total: K0</p>
+    <button onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+let cart = [];
+
+function scrollToMenu(){
+    document.getElementById("menu").scrollIntoView({behavior:"smooth"});
+}
+
+function addToCart(name, price){
+    cart.push({name, price});
+    updateCart();
+}
+
+function updateCart(){
+    let cartDiv = document.getElementById("cartItems");
+    let total = 0;
+    cartDiv.innerHTML = "";
+
+    cart.forEach(item=>{
+        cartDiv.innerHTML += `<p>${item.name} - K${item.price}</p>`;
+        total += item.price;
+    });
+
+    document.getElementById("total").innerText = "Total: K" + total;
+}
+
+function checkout(){
+    if(cart.length === 0){
+        alert("Cart is empty!");
+        return;
+    }
+
+    let message = "Hello, I want to order:%0A";
+
+    cart.forEach(item=>{
+        message += `- ${item.name} (K${item.price})%0A`;
+    });
+
+    let total = cart.reduce((sum,item)=>sum+item.price,0);
+    message += `%0ATotal: K${total}`;
+
+    let phone = "260XXXXXXXXX"; // PUT YOUR NUMBER
+
+    window.open(`https://wa.me/${phone}?text=${message}`);
+}
+</script>
+
+</body>
+</html>
